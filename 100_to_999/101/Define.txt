@@ -1,0 +1,51 @@
+# Block
+
+以block_t變數表示每個方塊。為了表示堆疊的情形，以雙向鏈結串列來儲存。block_t型別的定義如下：
+
+typedef struct _Block_t {
+        unsigned id;
+        struct _Block_t* above;
+        struct _Block_t* below;
+} block_t;
+
+id是方塊的編號，above是疊在上方的那個方塊的記憶體位置，below則是下方的那個方塊
+
+above或below為NULL時，代表沒方塊
+
+---------------------------------------------------------------------
+
+# Global Variable
+
+定義了一個global variable-- block_world，用來表示各個堆疊的情形
+
+	block_world[i]指向第i個堆疊中最下方的方塊，若為NULL則沒方塊
+
+	block_world[i]在最一開始時，一定會指向id為i的方塊
+
+定義了一個global variable-- all_blocks
+
+	all_blocks是block_t變數的陣列，儲存了所有的方塊
+
+	設計這個，是為了能快速存取各個id的方塊
+
+---------------------------------------------------------------------
+
+# Command
+
+指令有四種： move a onto b
+　　　　　， move   over
+　　　　　， pile   onto
+　　　　　， pile   over
+
+這四種指令間其實有規律
+
+move/pile影響a； onto/over影響b
+
+若為move，在搬a前要把上方的方塊「歸位」；若為pile則不用
+
+若為onto，b上方的方塊要先「歸位」，再把a放上去；若為over，a直接放在b所在堆疊最上方
+
+---------------------------------------------------------------------
+
+
+
